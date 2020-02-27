@@ -66,7 +66,9 @@ source itests.include
 
 # check for memory leaks
 LEAK=`cat valgrind/*.txt | grep 'definitely lost' | grep -v ' 0 bytes in 0 blocks'`
-if [ -z "$LEAK" ]; then
+if ! type "valgrind" &>/dev/null; then
+    echo "Valgrind is not installed. Could not check for memory leaks."
+elif [ -z "$LEAK" ]; then
     echo "No memory leak found."
 else
     echo "Memory leak(s) found. See files listed below for details."
